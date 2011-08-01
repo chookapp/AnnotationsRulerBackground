@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="com.chookapp.org.overviewrulerbackground.core.EditroEvents">
+      </startup>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.ui.editors.preferencePages.Annotations"
+            class="com.chookapp.org.overviewrulerbackground.preferences.OverviewRulerBackgroundPref"
+            id="com.overviewrulerbackground.org.preferences.OverviewRulerBackgroundPref"
+            name="Annotations ruler background">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="com.chookapp.org.overviewrulerbackground.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+
+
+</plugin>
