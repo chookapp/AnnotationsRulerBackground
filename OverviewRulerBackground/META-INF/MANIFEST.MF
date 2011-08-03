@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Overview Ruler Background
-Bundle-SymbolicName: OverviewRulerBackground;singleton:=true
+Bundle-Name: %Bundle-Name
+Bundle-SymbolicName: com.chookapp.org.OverviewRulerBackground;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: com.chookapp.org.overviewrulerbackground.Activator
-Bundle-Vendor: Gil Barash
+Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

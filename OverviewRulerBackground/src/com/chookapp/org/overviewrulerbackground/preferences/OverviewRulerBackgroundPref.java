@@ -30,7 +30,7 @@ public class OverviewRulerBackgroundPref
 	public OverviewRulerBackgroundPref() {
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Setting the backgrounf for the ovreview ruler (AKA annotations ruler)");
+		setDescription(Messages.OverviewRulerBackgroundPref_Description);
 	}
 	
 	/**
@@ -43,12 +43,12 @@ public class OverviewRulerBackgroundPref
 		addField(
 			new BooleanFieldEditor(
 				PreferenceConstants.P_SYS_DEF,
-				"&Use system default",
+				Messages.OverviewRulerBackgroundPref_SysDefault,
 				getFieldEditorParent()));
 
 		_colorFiled = new ColorFieldEditor(
 				PreferenceConstants.P_COLOR, 
-				"&Color", 
+				Messages.OverviewRulerBackgroundPref_Color, 
 				getFieldEditorParent());
 
 		addField(_colorFiled);
@@ -61,7 +61,7 @@ public class OverviewRulerBackgroundPref
 	public void propertyChange(PropertyChangeEvent event) {
 		super.propertyChange(event);
 		
-		setMessage("Opened pages might requiere re-opening for changes to take effect", INFORMATION);
+		setMessage(Messages.OverviewRulerBackgroundPref_Warning, INFORMATION);
 		
 		BooleanFieldEditor source;
 		if( event.getSource() instanceof BooleanFieldEditor )

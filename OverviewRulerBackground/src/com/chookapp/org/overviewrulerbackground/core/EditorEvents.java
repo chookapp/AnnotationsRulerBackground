@@ -3,7 +3,6 @@ package com.chookapp.org.overviewrulerbackground.core;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
@@ -21,7 +20,7 @@ import org.eclipse.ui.texteditor.AbstractTextEditor;
 import com.chookapp.org.overviewrulerbackground.Activator;
 import com.chookapp.org.overviewrulerbackground.preferences.PreferenceConstants;
 
-public class EditroEvents implements IStartup {
+public class EditorEvents implements IStartup {
 
 	@Override	
 	public void earlyStartup()

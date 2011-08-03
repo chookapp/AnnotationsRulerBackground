@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.startup">
       <startup
-            class="com.chookapp.org.overviewrulerbackground.core.EditroEvents">
+            class="com.chookapp.org.overviewrulerbackground.core.EditorEvents">
       </startup>
    </extension>
    <extension
@@ -13,7 +13,7 @@
             category="org.eclipse.ui.editors.preferencePages.Annotations"
             class="com.chookapp.org.overviewrulerbackground.preferences.OverviewRulerBackgroundPref"
             id="com.overviewrulerbackground.org.preferences.OverviewRulerBackgroundPref"
-            name="Annotations ruler background">
+            name="%page.name">
       </page>
    </extension>
    <extension
