@@ -5,7 +5,7 @@
       version="1.0.0.qualifier"
       provider-name="ChookApp">
 
-   <description url="http://github.com/chookapp/AnnotationsViewBackground">
+   <description url="http://github.com/chookapp/AnnotationsRulerBackground">
       This plaugin enables the user to set the background color of
 the overview ruler (AKA annoataions ruler)
    </description>
