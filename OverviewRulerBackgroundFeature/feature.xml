@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.chookapp.org.OverviewRulerBackground"
+      label="Overview Ruler Background"
+      version="1.0.0.qualifier"
+      provider-name="ChookApp">
+
+   <description url="http://github.com/chookapp/AnnotationsViewBackground">
+      This plaugin enables the user to set the background color of
+the overview ruler (AKA annoataions ruler)
+   </description>
+
+   <license url="http://www.eclipse.org/legal/epl-v10.html">
+      EPL
+   </license>
+
+   <plugin
+         id="com.chookapp.org.OverviewRulerBackground"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.qualifier"
+         unpack="false"/>
+
+</feature>
