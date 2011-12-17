@@ -5,6 +5,12 @@ This is a small Eclipse plugin enabling the usaer to change the background color
 
 Enjoy.
 
+Installation 
+============
+In your Eclipse, go to: Help->Install new software...  
+Enter the URL (in "Work with"): **http://chookapp.github.com/ChookappUpdateSite/**  
+From the chookapp category, choose "Overview Ruler Background".
+
 Screen shots
 ============
 
