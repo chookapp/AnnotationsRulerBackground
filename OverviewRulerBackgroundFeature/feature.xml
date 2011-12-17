@@ -2,7 +2,7 @@
 <feature
       id="com.chookapp.org.OverviewRulerBackground"
       label="Overview Ruler Background"
-      version="1.0.0.qualifier"
+      version="1.1.0.qualifier"
       provider-name="Chookapp">
 
    <description url="http://github.com/chookapp/AnnotationsRulerBackground">
@@ -14,11 +14,15 @@ the overview ruler (AKA annotations ruler)
       EPL
    </license>
 
+   <url>
+      <update url="http://chookapp.github.com/ChookappUpdateSite/"/>
+   </url>
+
    <plugin
          id="com.chookapp.org.OverviewRulerBackground"
          download-size="0"
          install-size="0"
-         version="1.0.0.qualifier"
+         version="1.1.0.qualifier"
          unpack="false"/>
 
 </feature>
