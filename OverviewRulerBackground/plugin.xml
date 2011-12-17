@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.startup">
       <startup
-            class="com.chookapp.org.overviewrulerbackground.core.EditorEvents">
+            class="com.chookapp.org.overviewrulerbackground.core.Startup">
       </startup>
    </extension>
    <extension

@@ -12,3 +12,10 @@ Screen shots
 
 ![before](https://github.com/chookapp/AnnotationsRulerBackground/raw/master/OverviewRulerBackground/doc/screenshot-before.JPG) ![after1](https://github.com/chookapp/AnnotationsRulerBackground/raw/master/OverviewRulerBackground/doc/screenshot-after1.JPG) ![after2](https://github.com/chookapp/AnnotationsRulerBackground/raw/master/OverviewRulerBackground/doc/screenshot-after2.JPG) 
 
+Release notes
+=============
+
+Build 1.1.0
+-----------
+
+- Support also editors opened in a new window.

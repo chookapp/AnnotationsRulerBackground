@@ -12,20 +12,26 @@
  *    emil.crumhorn@gmail.com - Some of the code was coped from the 
  *    "eclipsemissingfeatrues" plugin. 
  *******************************************************************************/
-
-
 package com.chookapp.org.overviewrulerbackground.core;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IPartListener;
-import org.eclipse.ui.IStartup;
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IPartListener2;
+import org.eclipse.ui.IWindowListener;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPartReference;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.source.IOverviewRuler;
@@ -36,49 +42,168 @@ import org.eclipse.ui.texteditor.AbstractTextEditor;
 import com.chookapp.org.overviewrulerbackground.Activator;
 import com.chookapp.org.overviewrulerbackground.preferences.PreferenceConstants;
 
-public class EditorEvents implements IStartup {
+public class EditorEvents implements IWindowListener, IPartListener2
+{
 
-	@Override	
-	public void earlyStartup()
-	{
-		// hook us on an async as we need the active page
-		Display.getDefault().asyncExec(new Runnable() {
-			public void run() {
-				// hook the startup editor if any, it doesn't get notified via a normal event
-				IEditorPart startupEditorPart = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-				if (startupEditorPart != null) {
-					activated(Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart());
-				}
-
-				Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().addPartListener(new IPartListener() {
-
-					public void partActivated(IWorkbenchPart part) {
-						activated(part);
-					}
-
-					public void partBroughtToTop(IWorkbenchPart part) {
-						activated(part);
-					}				
-
-					public void partClosed(IWorkbenchPart part) {
-					//	deactivated(part);
-					}
-
-					public void partDeactivated(IWorkbenchPart part) {
-					//	deactivated(part);
-					}
-
-					public void partOpened(IWorkbenchPart part) {
-						activated(part);
-					}
-
-				});
-			}
-		});
-	}	
+	private static EditorEvents sInstance = new EditorEvents();
+	private Collection<IWorkbenchWindow> fWindows = new HashSet<IWorkbenchWindow>();
+	  
+	   
+    public static EditorEvents getInstance()
+    {
+        return sInstance;
+    }  
+    
 	
-	private void activated(IWorkbenchPart part) {
+    public void install() 
+    {
+        IWorkbench workbench = PlatformUI.getWorkbench();
+        if (workbench == null)
+        {
+            Activator.log("can't find workbanch");
+            return;
+        }
+
+        // listen for new windows
+        workbench.addWindowListener(this);
+        IWorkbenchWindow[] wnds= workbench.getWorkbenchWindows();
+        for (int i = 0; i < wnds.length; i++) 
+        {
+            IWorkbenchWindow window = wnds[i];
+            register(window);
+        }
+        // register open windows
+        //            IWorkbenchWindow ww= PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        //            if (ww != null) {
+        //                IWorkbenchPage activePage = ww.getActivePage();
+        //                if (activePage != null) {
+        //                    IWorkbenchPartReference part= activePage.getActivePartReference();
+        //                    if (part != null) {
+        //                        partActivated(part);
+        //                    }
+        //                }
+        //            }
+
+    }
+
+    public void uninstall() 
+    {
+        for (Iterator<IWorkbenchWindow> iterator = fWindows.iterator(); iterator.hasNext();) 
+        {
+            IWorkbenchWindow window = iterator.next();
+            unregister(window);
+        }      
+    }
+
+    private void register(IWorkbenchWindow wnd) 
+    {
+        wnd.getPartService().addPartListener(this);
+        fWindows.add(wnd);
+        IWorkbenchPage[] pages = wnd.getPages();
+        for (IWorkbenchPage page : pages)
+        {
+            IEditorReference[] editorRefs = page.getEditorReferences();
+            for (IEditorReference editorRef : editorRefs)
+            {
+                partActivated(editorRef);
+            }
+        }
+        
+        IWorkbenchPage page = wnd.getActivePage();
+        if( page != null )
+        {
+            activated(page.getActivePartReference());
+        }
+    }
+    
+    /*
+     * This function is expected to be closed when a window is closed (including 
+     *  when eclipse closes), so the parts have already been closed.
+     * This is because I don't dispose the higlighers in this function... 
+     */
+    private void unregister(IWorkbenchWindow wnd) 
+    {
+        wnd.getPartService().removePartListener(this);
+        fWindows.remove(wnd);
+    }
+    
+    
+    /* window events */
+
+    @Override
+    public void windowActivated(IWorkbenchWindow window)
+    {
+    }
+
+    @Override
+    public void windowDeactivated(IWorkbenchWindow window)
+    {
+    }
+
+    @Override
+    public void windowOpened(IWorkbenchWindow window) 
+    {
+        register(window);
+    }
+
+    @Override
+    public void windowClosed(IWorkbenchWindow window) 
+    {
+        unregister(window);
+    }
+    
+    
+    /* part events */
+    
+    @Override
+    public void partActivated(IWorkbenchPartReference partRef)
+    {
+        activated(partRef);
+    }   
+
+    @Override
+    public void partBroughtToTop(IWorkbenchPartReference partRef)
+    {
+    }
+
+    @Override
+    public void partClosed(IWorkbenchPartReference partRef)
+    {
+    }
+
+    @Override
+    public void partDeactivated(IWorkbenchPartReference partRef)
+    {
+    }
+
+    @Override
+    public void partOpened(IWorkbenchPartReference partRef)
+    {
+    	activated(partRef);
+    }
+
+    @Override
+    public void partHidden(IWorkbenchPartReference partRef)
+    {
+    }
+
+    @Override
+    public void partVisible(IWorkbenchPartReference partRef)
+    {
+    }
+
+    @Override
+    public void partInputChanged(IWorkbenchPartReference partRef)
+    {
+    }
+
+	
+	private void activated(IWorkbenchPartReference partRef) 
+	{
 		try {
+	        if( partRef == null )
+	            return;
+	       
 			if( Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.P_SYS_DEF))
 				return;
 			
@@ -87,6 +212,9 @@ public class EditorEvents implements IStartup {
 							PreferenceConstants.P_COLOR);
 
 			IEditorPart editorPart = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+			if( editorPart == null )
+				return;
+			
 			SourceViewer sv = (SourceViewer) callGetSourceViewer((AbstractTextEditor) editorPart);
 			OverviewRuler ruler = (OverviewRuler) getOverviewRuler(sv);
 			ruler.getControl().setBackground(new Color(Display.getDefault(),rgb));
@@ -103,7 +231,7 @@ public class EditorEvents implements IStartup {
 	 */
 	private ITextViewer callGetSourceViewer(AbstractTextEditor editor) throws Exception {
 		try {
-			Method method = AbstractTextEditor.class.getDeclaredMethod("getSourceViewer");
+			Method method = AbstractTextEditor.class.getDeclaredMethod("getSourceViewer"); //$NON-NLS-1$
 			method.setAccessible(true);
 
 			return (ITextViewer) method.invoke(editor);
@@ -120,7 +248,7 @@ public class EditorEvents implements IStartup {
      */
     private IOverviewRuler getOverviewRuler(SourceViewer viewer) {
         try {
-            Field f = SourceViewer.class.getDeclaredField("fOverviewRuler");
+            Field f = SourceViewer.class.getDeclaredField("fOverviewRuler"); //$NON-NLS-1$
             f.setAccessible(true);
             return (IOverviewRuler) f.get(viewer);
         } catch (Exception err) {
